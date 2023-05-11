@@ -51,7 +51,6 @@ public class AppRoomController extends BaseController
     public String addRoom(AppRoom appRoom)
     {
         try {
-//            roomTitle
             String romtitle = appRoom.getRoomTitle();
             int flag_rt = appRoomService.selectcountroomtitle(romtitle);
             if (flag_rt > 0) {
