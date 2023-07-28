@@ -1,6 +1,9 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.system.domain.AppHxpeople;
 import com.ruoyi.system.domain.AppRoom;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +15,12 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface AppRoomMapper 
 {
+
+    int addtoupiao(@Param("tp_user_id") String tp_user_id,@Param("hx_people_id") String hx_people_id,@Param("room_id") String room_id);
+
+    int addhxpeople(AppHxpeople appHxpeople);
+
+    int updatehxpeople(AppHxpeople appHxpeople);
     /**
      * 查询房间大厅
      * 
@@ -19,6 +28,15 @@ public interface AppRoomMapper
      * @return 房间大厅
      */
     public AppRoom selectAppRoomByRoomId(Long roomId);
+
+    List<Map<String,Object>> hxpeoplelist(String room_id);
+
+    List<Map<String,Object>> showtpulist(String room_id);
+
+    String roomidbyhx_peopleid(String id);
+
+    String hxpeopleticketnum(String id);
+
 
     /**
      * 查询房间大厅列表
@@ -36,9 +54,9 @@ public interface AppRoomMapper
      */
     public int insertAppRoom(AppRoom appRoom);
 
-    int countroompass(@Param("tbyear") String room_id,@Param("room_pass") String room_pass);
+    int countroompass(@Param("roomId") String roomId,@Param("roomPass") String roomPass);
 
-    public int selectcountroomtitle(String room_title);
+    public int selectcountroomtitle(@Param("room_title") String room_title);
 
     String selectroomid(String room_title);
 
@@ -65,4 +83,6 @@ public interface AppRoomMapper
      * @return 结果
      */
     public int deleteAppRoomByRoomIds(String[] roomIds);
+
+    Map<String ,Object> selectroomMap(String room_id);
 }

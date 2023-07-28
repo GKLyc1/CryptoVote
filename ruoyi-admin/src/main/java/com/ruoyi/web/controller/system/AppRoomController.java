@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ruoyi.common.utils.KamUtil;
+import com.ruoyi.system.domain.AppHxpeople;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @author ChrisGai
  * @date 2023-05-11
  */
+
+
 @Controller
 @RequestMapping("/system/room")
 public class AppRoomController extends BaseController
@@ -69,6 +72,30 @@ public class AppRoomController extends BaseController
         return KamUtil.returnError();
     }
 
+
+
+    /**
+     * 加入房间
+     * @param roomId
+     * @return
+     */
+    @PostMapping("/addinroom")
+    @ResponseBody
+    public String addinroom(String roomId, String roomPass)
+    {
+        try {
+            int flag = appRoomService.countroompass(roomId,roomPass);
+            if (flag > 0) {
+                Map<String ,Object> map = appRoomService.selectroomMap(roomId);
+                return KamUtil.returnSuccess(map);
+            }
+            return KamUtil.returnError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return KamUtil.returnError();
+    }
+
     /**
      * 房间列表
      * @param appRoom
@@ -89,6 +116,132 @@ public class AppRoomController extends BaseController
     }
 
 
+    /**
+     * 候选人列表
+     * @param
+     * @return
+     */
+    @PostMapping("/hxpeoplelist")
+    @ResponseBody
+    public String hxpeoplelist(String room_id)
+    {
+        try {
+            List<Map<String,Object>> list = appRoomService.hxpeoplelist(room_id);
+
+            return KamUtil.returnSuccess(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return KamUtil.returnError();
+    }
+
+    //添加候选人
+    @PostMapping("/addhxpeople")
+    @ResponseBody
+    public String addhxpeople(AppHxpeople appHxpeople)
+    {
+        try {
+            appHxpeople.setHx_num_piao("0");
+            int flag = appRoomService.addhxpeople(appHxpeople);
+            if (flag > 0) {
+                return KamUtil.returnSuccess();
+            }
+            return KamUtil.returnError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return KamUtil.returnError();
+    }
+
+    //投票
+    @PostMapping("/addtoupiao")
+    @ResponseBody
+    public String addtoupiao(String tp_user_id,String hx_people_id,AppHxpeople appHxpeople)
+    {
+        try {
+            //给多人投票
+            if (hx_people_id.contains(",")) {
+                String hxid[] = hx_people_id.split(",");
+                for (int i = 0; i < hxid.length; i++) {
+                    //根据候选人id查找房间id
+                    String room_id = appRoomService.roomidbyhx_peopleid(hxid[i]);
+
+                    int flag = appRoomService.addtoupiao(tp_user_id,hxid[i],room_id);
+                    if (flag > 0) {
+                        //投票后加票
+                        String hx_num = appRoomService.hxpeopleticketnum(hxid[i]);
+                        int h_num = Integer.parseInt(hx_num);
+                        int s = h_num+1;
+                        String ansnum = s+"";
+                        appHxpeople.setHx_num_piao(ansnum);
+                        appHxpeople.setId(hxid[i]);
+                        appRoomService.updatehxpeople(appHxpeople);
+                        System.out.println("success one~");
+                    }
+                }return KamUtil.returnSuccess();
+            }else{
+
+                //根据候选人id查找房间id
+                String room_id = appRoomService.roomidbyhx_peopleid(hx_people_id);
+
+                int flag = appRoomService.addtoupiao(tp_user_id,hx_people_id,room_id);
+                if (flag > 0) {
+                    //投票后加票
+                    String hx_num = appRoomService.hxpeopleticketnum(hx_people_id);
+                    int h_num = Integer.parseInt(hx_num);
+                    int s = h_num+1;
+                    String ansnum = s+"";
+                    appHxpeople.setHx_num_piao(ansnum);
+                    appHxpeople.setId(hx_people_id);
+                    appRoomService.updatehxpeople(appHxpeople);
+                    return KamUtil.returnSuccess();
+                }
+            }
+
+            return KamUtil.returnError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return KamUtil.returnError();
+    }
+
+    //投票人列表
+    @PostMapping("/showtpulist")
+    @ResponseBody
+    public String showtpulist(String room_id)
+    {
+        try {
+
+            List<Map<String,Object>> list = appRoomService.showtpulist(room_id);
+            if (list.size() > 0) {
+                return KamUtil.returnSuccess(list);
+            }
+            return KamUtil.returnError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return KamUtil.returnError();
+    }
+
+    //修改房间状态
+    @PostMapping("/updateroom")
+    @ResponseBody
+    public String updateroom(AppRoom appRoom)
+    {
+        try{
+
+            int flag = appRoomService.updateAppRoom(appRoom);
+            if (flag > 0) {
+                return KamUtil.returnSuccess();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return KamUtil.returnError();
+        }
+
+        return KamUtil.returnError();
+    }
 
 
 

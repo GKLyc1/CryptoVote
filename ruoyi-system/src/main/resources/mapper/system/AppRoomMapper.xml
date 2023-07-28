@@ -13,14 +13,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="roomtime"    column="roomtime"    />
     </resultMap>
 
+    <!--  候选人添加  -->
+    <insert id="addtoupiao" parameterType="String">
+        insert into app_toupiao (tp_user_id,hx_people_id,room_id ) value (#{tp_user_id},#{hx_people_id},#{room_id})
+    </insert>
+
+    <!--投票人列表-->
+    <select id="showtpulist" parameterType="String" resultType="java.util.Map">
+        SELECT t.tp_user_id,u.nickname,u.head_url,DATE_FORMAT (t.toupiaotime,'%Y-%m-%d %H:%i:%s') as toupiaotime  FROM app_toupiao t LEFT JOIN appuser_info u ON t.tp_user_id = u.user_id WHERE t.room_id = #{room_id}
+    </select>
+
+    <!--  根据候选人id查找房间id  -->
+    <select id="roomidbyhx_peopleid" parameterType="String" resultType="String">
+        SELECT room_id FROM app_hxpeople WHERE id = #{id}
+    </select>
+
+    <!--  候选人添加  -->
+    <insert id="addhxpeople" parameterType="com.ruoyi.system.domain.AppHxpeople" >
+        insert into app_hxpeople
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hx_name != null">hx_name,</if>
+            <if test="hx_url != null">hx_url,</if>
+            <if test="hx_num_piao != null">hx_num_piao,</if>
+            <if test="room_id != null">room_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hx_name != null">#{hx_name},</if>
+            <if test="hx_url != null">#{hx_url},</if>
+            <if test="hx_num_piao != null">#{hx_num_piao},</if>
+            <if test="room_id != null">#{room_id},</if>
+        </trim>
+    </insert>
+
     <sql id="selectAppRoomVo">
-        select room_id, user_id, room_pass, room_title, room_url, roomtime from app_room
+        select room_id, user_id, room_pass, room_title, room_url, roomtime,one_all,close_ticket from app_room
     </sql>
+
+    <select id="selectroomMap" parameterType="String" resultType="java.util.Map">
+        select room_id, user_id, room_pass, room_title, room_url,DATE_FORMAT (roomtime,'%Y-%m-%d %H:%i:%s') as  roomtime,one_all,close_ticket from app_room where room_id = #{room_id}
+    </select>
 
     <select id="selectAppRoomList" parameterType="AppRoom" resultMap="AppRoomResult">
         <include refid="selectAppRoomVo"/>
-        <where>  
+        <where>
+            is_del = 0
             <if test="roomTitle != null  and roomTitle != ''"> and room_title = #{roomTitle}</if>
+            <if test="user_id != null  and user_id != ''"> and user_id = #{user_id}</if>
         </where>
     </select>
     
@@ -29,17 +67,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where room_id = #{roomId}
     </select>
 
+    <!--  候选人列表  -->
+    <select id="hxpeoplelist" parameterType="String" resultType="java.util.Map">
+        select id,hx_name,hx_url,hx_num_piao,backup,room_id,one_all,close_ticket from app_hxpeople where room_id = #{room_id} and is_del = 0
+    </select>
+
+    <!--  候选人票数  -->
+    <select id="hxpeopleticketnum" parameterType="String" resultType="java.lang.String">
+        select hx_num_piao from app_hxpeople where id = #{id}
+    </select>
+
+    <!--  修改候选票数  -->
+    <update id="updatehxpeople" parameterType ="com.ruoyi.system.domain.AppHxpeople">
+        update app_hxpeople
+        <trim prefix="SET" suffixOverrides=",">
+<!--            <if test="userId != null">user_id = #{userId},</if>-->
+<!--            <if test="roomPass != null">room_pass = #{roomPass},</if>-->
+<!--            <if test="roomTitle != null">room_title = #{roomTitle},</if>-->
+<!--            <if test="roomUrl != null">room_url = #{roomUrl},</if>-->
+<!--            <if test="roomtime != null">roomtime = #{roomtime},</if>-->
+            <if test="hx_num_piao != null">hx_num_piao = #{hx_num_piao},</if>
+            <if test="id != null">id = #{id},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
 
     <select id="countroompass" parameterType="String" resultType="java.lang.Integer">
-        select count(1) from app_room where room_id = {room_id} and room_pass = #{room_pass}
+        select count(1) from app_room where room_id = #{roomId} and room_pass = #{roomPass}
     </select>
 
     <select id="selectcountroomtitle" parameterType="String" resultType="java.lang.Integer">
-        select count(1) from app_room where room_title = {room_title}
+        select count(1) from app_room where room_title = #{room_title}
     </select>
 
     <select id="selectroomid" parameterType="String" resultType="java.lang.String">
-        select room_id from app_room where room_title = {room_title}
+        select room_id from app_room where room_title = #{room_title}
     </select>
         
     <insert id="insertAppRoom" parameterType="AppRoom">
@@ -70,6 +133,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="roomTitle != null">room_title = #{roomTitle},</if>
             <if test="roomUrl != null">room_url = #{roomUrl},</if>
             <if test="roomtime != null">roomtime = #{roomtime},</if>
+            <if test="one_all != null">one_all = #{one_all},</if>
+            <if test="close_ticket != null">close_ticket = #{close_ticket},</if>
+            <if test="is_del != null">is_del = #{is_del},</if>
         </trim>
         where room_id = #{roomId}
     </update>

@@ -1,6 +1,9 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.system.domain.AppHxpeople;
 import com.ruoyi.system.domain.AppRoom;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +15,17 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface IAppRoomService 
 {
+
+    List<Map<String,Object>> showtpulist(String room_id);
+
+    int addtoupiao(String tp_user_id,String hx_people_id,String room_id);
+
+    int addhxpeople(AppHxpeople appHxpeople);
+
+    String roomidbyhx_peopleid(String id);
+
+
+
     /**
      * 查询房间大厅
      * 
@@ -36,11 +50,16 @@ public interface IAppRoomService
      */
     public int insertAppRoom(AppRoom appRoom);
 
+    int updatehxpeople(AppHxpeople appHxpeople);
+
     public int selectcountroomtitle(String room_title);
 
     String selectroomid(String room_title);
 
-    int countroompass(@Param("tbyear") String room_id, @Param("room_pass") String room_pass);
+    int countroompass(String room_id, String room_pass);
+
+    List<Map<String,Object>> hxpeoplelist(String room_id);
+    String hxpeopleticketnum(String id);
 
     /**
      * 修改房间大厅
@@ -65,4 +84,8 @@ public interface IAppRoomService
      * @return 结果
      */
     public int deleteAppRoomByRoomId(Long roomId);
+
+    Map<String ,Object> selectroomMap(String room_id);
+
+
 }

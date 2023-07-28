@@ -11,7 +11,7 @@
  Target Server Version : 50723
  File Encoding         : 65001
 
- Date: 12/05/2023 06:11:48
+ Date: 16/05/2023 07:19:07
 */
 
 SET NAMES utf8mb4;
@@ -71,6 +71,33 @@ INSERT INTO `app_first_manage` (`news_id`, `news_title`, `picurl`, `content`, `t
 COMMIT;
 
 -- ----------------------------
+-- Table structure for app_hxpeople
+-- ----------------------------
+DROP TABLE IF EXISTS `app_hxpeople`;
+CREATE TABLE `app_hxpeople` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `hx_name` varchar(255) DEFAULT NULL COMMENT '候选人姓名',
+  `hx_url` varchar(255) DEFAULT NULL COMMENT '候选人图片',
+  `hx_num_piao` varchar(255) DEFAULT NULL COMMENT '候选人得票',
+  `backup` varchar(255) DEFAULT '' COMMENT '备注',
+  `room_id` varchar(255) DEFAULT NULL COMMENT '房间号id',
+  `one_all` varchar(255) DEFAULT '0' COMMENT '1:单选 2：多选',
+  `close_ticket` varchar(255) DEFAULT '0' COMMENT '0:默认 1:结束投票',
+  `is_del` varchar(255) DEFAULT '0' COMMENT '0:未删除 1:删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='候选人表';
+
+-- ----------------------------
+-- Records of app_hxpeople
+-- ----------------------------
+BEGIN;
+INSERT INTO `app_hxpeople` (`id`, `hx_name`, `hx_url`, `hx_num_piao`, `backup`, `room_id`, `one_all`, `close_ticket`, `is_del`) VALUES (1, '候选人1', '候选人图片url', '3', '2', '3', '0', '0', '0');
+INSERT INTO `app_hxpeople` (`id`, `hx_name`, `hx_url`, `hx_num_piao`, `backup`, `room_id`, `one_all`, `close_ticket`, `is_del`) VALUES (3, '候选人2', '候选人图片2', '1', '', '3', '0', '0', '0');
+INSERT INTO `app_hxpeople` (`id`, `hx_name`, `hx_url`, `hx_num_piao`, `backup`, `room_id`, `one_all`, `close_ticket`, `is_del`) VALUES (6, '啦啦啦', 'http://xychead.xueyiche.vip/pic_1684170839602.jpg', '0', '', '6', '0', '0', '0');
+INSERT INTO `app_hxpeople` (`id`, `hx_name`, `hx_url`, `hx_num_piao`, `backup`, `room_id`, `one_all`, `close_ticket`, `is_del`) VALUES (7, '哦哦哦', 'http://xychead.xueyiche.vip/pic_1684170856883.jpg', '0', '', '6', '0', '0', '0');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for app_room
 -- ----------------------------
 DROP TABLE IF EXISTS `app_room`;
@@ -79,17 +106,22 @@ CREATE TABLE `app_room` (
   `user_id` varchar(255) DEFAULT NULL COMMENT '用户id',
   `room_pass` varchar(255) DEFAULT NULL COMMENT '房间密码',
   `room_title` varchar(255) DEFAULT NULL COMMENT '房间标题',
-  `room_url` varchar(255) DEFAULT NULL COMMENT '房间标题',
+  `room_url` varchar(255) DEFAULT NULL COMMENT '房间图片',
   `roomtime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `one_all` varchar(255) DEFAULT '0' COMMENT '1:单选 2：多选',
+  `close_ticket` varchar(255) DEFAULT '0' COMMENT '0:默认 1:结束投票',
+  `is_del` varchar(255) DEFAULT '0' COMMENT '0:未删除 1:删除',
   PRIMARY KEY (`room_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='房间大厅';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='房间大厅';
 
 -- ----------------------------
 -- Records of app_room
 -- ----------------------------
 BEGIN;
-INSERT INTO `app_room` (`room_id`, `user_id`, `room_pass`, `room_title`, `room_url`, `roomtime`) VALUES (3, '9', '6677', '呢呢呢', 'http://xychead.xueyiche.vip/pic_1683816017432.jpg', '2023-05-11 22:40:27');
-INSERT INTO `app_room` (`room_id`, `user_id`, `room_pass`, `room_title`, `room_url`, `roomtime`) VALUES (4, '9', '000000', '吃开了', 'http://xychead.xueyiche.vip/pic_1683816532048.jpg', '2023-05-11 22:49:00');
+INSERT INTO `app_room` (`room_id`, `user_id`, `room_pass`, `room_title`, `room_url`, `roomtime`, `one_all`, `close_ticket`, `is_del`) VALUES (3, '9', '6677', '呢呢呢', 'http://xychead.xueyiche.vip/pic_1683816017432.jpg', '2023-05-11 22:40:27', '1', '1', '0');
+INSERT INTO `app_room` (`room_id`, `user_id`, `room_pass`, `room_title`, `room_url`, `roomtime`, `one_all`, `close_ticket`, `is_del`) VALUES (4, '9', '000000', '吃开了', 'http://xychead.xueyiche.vip/pic_1683816532048.jpg', '2023-05-11 22:49:00', '0', '0', '0');
+INSERT INTO `app_room` (`room_id`, `user_id`, `room_pass`, `room_title`, `room_url`, `roomtime`, `one_all`, `close_ticket`, `is_del`) VALUES (5, '8', '333', '333', '2323', '2023-05-16 01:10:12', '0', '0', '0');
+INSERT INTO `app_room` (`room_id`, `user_id`, `room_pass`, `room_title`, `room_url`, `roomtime`, `one_all`, `close_ticket`, `is_del`) VALUES (6, '10', '0000', '测试', 'http://xychead.xueyiche.vip/pic_1684169954517.jpg', '2023-05-16 01:11:34', '1', '0', '0');
 COMMIT;
 
 -- ----------------------------
@@ -126,6 +158,58 @@ INSERT INTO `app_shenhe` (`id`, `user_id`, `pic`, `minzu`, `sex`, `age`, `zzmm`,
 INSERT INTO `app_shenhe` (`id`, `user_id`, `pic`, `minzu`, `sex`, `age`, `zzmm`, `jiguan`, `hyzk`, `xlxx`, `cylb`, `dszv`, `name`, `phone`, `sfzid`, `address`, `type`) VALUES (1234, '12', 'picurl', '汉族', '男', '18', '群众', '哈尔滨', '未婚', '大学', 'IT', '独生子女', '周杰伦', '1365555555', '2301871987498237', '黑龙江哈尔滨江北', '0');
 INSERT INTO `app_shenhe` (`id`, `user_id`, `pic`, `minzu`, `sex`, `age`, `zzmm`, `jiguan`, `hyzk`, `xlxx`, `cylb`, `dszv`, `name`, `phone`, `sfzid`, `address`, `type`) VALUES (1235, '6', 'http://xychead.xueyiche.vip/pic_1681352609646.jpg', '汉族', '男', '16', '群众', '哈尔滨', '未婚', '小学', '明', '是', '路飞', '18346012117', '26', '26', '1');
 INSERT INTO `app_shenhe` (`id`, `user_id`, `pic`, `minzu`, `sex`, `age`, `zzmm`, `jiguan`, `hyzk`, `xlxx`, `cylb`, `dszv`, `name`, `phone`, `sfzid`, `address`, `type`) VALUES (1236, '7', 'http://xychead.xueyiche.vip/pic_1681437420933.jpg', '汉族', '女', '16', '群众', '北京', '未婚', '小学', '罢了', '是', '测试', '13000000000', '2318466467949797', '2318466467949797', '0');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for app_toupiao
+-- ----------------------------
+DROP TABLE IF EXISTS `app_toupiao`;
+CREATE TABLE `app_toupiao` (
+  `id` int(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `tp_user_id` varchar(255) DEFAULT NULL COMMENT '投票人id',
+  `hx_people_id` varchar(255) DEFAULT NULL COMMENT '候选人id',
+  `toupiaotime` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '投票时间',
+  `room_id` varchar(255) DEFAULT NULL COMMENT '房间id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of app_toupiao
+-- ----------------------------
+BEGIN;
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (1, '2', '3', '2023-05-13 22:48:19', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (2, '6', '3', '2023-05-14 22:04:01', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (3, '7', '3', '2023-05-14 22:30:36', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (4, '7', '1', '2023-05-15 21:50:19', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (12, '8', '1', '2023-05-15 22:45:12', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (13, '8', '3', '2023-05-15 22:45:13', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (14, '10', '1', '2023-05-15 23:18:30', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (15, '10', '1', '2023-05-15 23:18:47', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (16, '10', '1', '2023-05-15 23:19:49', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (17, '10', '1', '2023-05-16 01:19:35', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (18, '10', '1', '2023-05-16 01:21:00', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (19, '10', '1', '2023-05-16 01:24:12', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (20, '10', '1', '2023-05-16 01:26:43', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (22, '10', '1', '2023-05-16 01:29:55', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (24, '10', '6', '2023-05-16 01:35:14', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (25, '10', '6', '2023-05-16 01:41:11', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (26, '10', '7', '2023-05-16 01:48:00', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (27, '10', '6', '2023-05-16 01:48:00', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (28, '10', '6', '2023-05-16 01:48:20', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (29, '10', '7', '2023-05-16 01:50:33', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (30, '10', '6', '2023-05-16 01:50:33', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (31, '8', '6', '2023-05-16 01:51:28', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (32, '8', '7', '2023-05-16 01:51:28', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (33, '8', '6', '2023-05-16 01:51:32', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (34, '8', '7', '2023-05-16 01:51:32', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (35, '8', '6', '2023-05-16 01:52:00', '6');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (36, '8', '1', '2023-05-16 02:03:38', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (37, '8', '1', '2023-05-16 02:03:52', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (38, '8', '1', '2023-05-16 02:05:44', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (39, '8', '1', '2023-05-16 02:08:21', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (40, '8', '1', '2023-05-16 02:10:13', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (41, '8', '1', '2023-05-16 02:11:32', '3');
+INSERT INTO `app_toupiao` (`id`, `tp_user_id`, `hx_people_id`, `toupiaotime`, `room_id`) VALUES (42, '8', '3', '2023-05-16 02:11:37', '3');
 COMMIT;
 
 -- ----------------------------
@@ -192,7 +276,7 @@ CREATE TABLE `appuser_info` (
   `introduce` varchar(500) DEFAULT NULL COMMENT '简介',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='个人信息';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='个人信息';
 
 -- ----------------------------
 -- Records of appuser_info
@@ -205,8 +289,9 @@ INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `user
 INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (5, NULL, 'sdf', 'df', '189777', '123123', NULL, NULL, NULL, NULL);
 INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (6, '路飞7', 'http://xychead.xueyiche.vip/pic_1681351141083.jpg', 'http://xychead.xueyiche.vip/pic_1681350288959.jpg', '18346012117', 'qwer', '男', '19', '你蘑菇', NULL);
 INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (7, '蜡笔小新', 'http://xychead.xueyiche.vip/pic_1681437348894.jpg', 'http://xychead.xueyiche.vip/pic_1681437380699.jpg', '13000000000', 'qwer', '男', '22', '吃呀', NULL);
-INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (8, NULL, NULL, NULL, '18888888888', 'qwer', NULL, NULL, NULL, NULL);
+INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (8, '18888', 'http://xychead.xueyiche.vip/pic_1684173067135.jpg', NULL, '18888888888', 'qwer', NULL, NULL, NULL, NULL);
 INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (9, NULL, NULL, NULL, '13666666666', 'qwer', NULL, NULL, NULL, NULL);
+INSERT INTO `appuser_info` (`user_id`, `nickname`, `head_url`, `back_url`, `userphone`, `password`, `sex`, `age`, `introduce`, `remark`) VALUES (10, '龙珠', 'http://xychead.xueyiche.vip/pic_1684164012183.jpg', NULL, '16666666666', 'qwer', NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
@@ -1107,7 +1192,6 @@ CREATE TABLE `sys_user_online` (
 -- Records of sys_user_online
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user_online` (`sessionId`, `login_name`, `dept_name`, `ipaddr`, `login_location`, `browser`, `os`, `status`, `start_timestamp`, `last_access_time`, `expire_time`) VALUES ('86e6ec13-f402-4a3f-a5ff-4f6ef666cdb0', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', 'on_line', '2023-05-11 22:42:34', '2023-05-11 22:42:36', 1800000);
 COMMIT;
 
 -- ----------------------------

@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -13,6 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ChrisGai
  * @date 2023-05-11
  */
+@Data
 public class AppRoom extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -24,6 +26,7 @@ public class AppRoom extends BaseEntity
     /** 用户id */
     @Excel(name = "用户id")
     private String userId;
+    private String user_id;
 
     /** 房间密码 */
     @Excel(name = "房间密码")
@@ -36,6 +39,10 @@ public class AppRoom extends BaseEntity
     /** 房间图片 */
     @Excel(name = "房间图片")
     private String roomUrl;
+
+    private String one_all;
+    private String close_ticket;
+    private String is_del;
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")

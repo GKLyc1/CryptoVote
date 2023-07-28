@@ -1,6 +1,9 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+import java.util.Map;
+
+import com.ruoyi.system.domain.AppHxpeople;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.AppRoomMapper;
@@ -19,6 +22,26 @@ public class AppRoomServiceImpl implements IAppRoomService
 {
     @Autowired
     private AppRoomMapper appRoomMapper;
+
+    @Override
+    public List<Map<String, Object>> showtpulist(String room_id) {
+        return appRoomMapper.showtpulist(room_id);
+    }
+
+    @Override
+    public int addtoupiao(String tp_user_id, String hx_people_id,String room_id) {
+        return appRoomMapper.addtoupiao(tp_user_id,hx_people_id,room_id);
+    }
+
+    @Override
+    public int addhxpeople(AppHxpeople appHxpeople) {
+        return appRoomMapper.addhxpeople(appHxpeople);
+    }
+
+    @Override
+    public String roomidbyhx_peopleid(String id) {
+        return appRoomMapper.roomidbyhx_peopleid(id);
+    }
 
     /**
      * 查询房间大厅
@@ -57,6 +80,11 @@ public class AppRoomServiceImpl implements IAppRoomService
     }
 
     @Override
+    public int updatehxpeople(AppHxpeople appHxpeople) {
+        return appRoomMapper.updatehxpeople(appHxpeople);
+    }
+
+    @Override
     public int selectcountroomtitle(String room_title) {
         return appRoomMapper.selectcountroomtitle(room_title);
     }
@@ -69,6 +97,16 @@ public class AppRoomServiceImpl implements IAppRoomService
     @Override
     public int countroompass(String room_id, String room_pass) {
         return appRoomMapper.countroompass(room_id,room_pass);
+    }
+
+    @Override
+    public List<Map<String, Object>> hxpeoplelist(String room_id) {
+        return appRoomMapper.hxpeoplelist( room_id);
+    }
+
+    @Override
+    public String hxpeopleticketnum(String id) {
+        return appRoomMapper.hxpeopleticketnum(id);
     }
 
     /**
@@ -105,5 +143,10 @@ public class AppRoomServiceImpl implements IAppRoomService
     public int deleteAppRoomByRoomId(Long roomId)
     {
         return appRoomMapper.deleteAppRoomByRoomId(roomId);
+    }
+
+    @Override
+    public Map<String, Object> selectroomMap(String room_id) {
+        return appRoomMapper.selectroomMap(room_id);
     }
 }
